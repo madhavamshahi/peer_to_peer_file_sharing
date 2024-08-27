@@ -1,9 +1,11 @@
+package src;
+
 import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-        Peer peer1 = new Peer("Peer1", 5000);
-        Peer peer2 = new Peer("Peer2", 5001);
+        Peer peer1 = new Peer("Peer1", 9090);
+        Peer peer2 = new Peer("Peer2", 9091);
 
         // Share files on each peer
         peer1.shareFile("file1.txt");
@@ -30,6 +32,6 @@ public class Main {
         Client client = new Client();
 
         // Peer1 downloads a file from Peer2
-        client.downloadFile("localhost", 5001, "file2.txt");
+        client.downloadFile("localhost", 9091, "file2.txt");
     }
 }

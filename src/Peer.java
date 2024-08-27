@@ -1,3 +1,5 @@
+package src;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -48,25 +50,32 @@ public class Peer {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String filename = in.readLine();
 
-                File file = new File(filename);
-                if (file.exists()) {
-                    OutputStream os = socket.getOutputStream();
-                    FileInputStream fis = new FileInputStream(file);
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-
-                    while ((bytesRead = fis.read(buffer)) != -1) {
-                        os.write(buffer, 0, bytesRead);
-                    }
-
-                    fis.close();
-                    os.close();
+                File file = new File("files/" + filename);
+                if (!file.exists()) {
+                    System.out.println("File not found: " + filename);
+                    socket.close();
+                    return;
                 }
 
+                OutputStream os = socket.getOutputStream();
+                FileInputStream fis = new FileInputStream(file);
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+
+                fis.close();
+                os.flush();
+                os.close();
                 socket.close();
+
+                System.out.println("File sent: " + filename);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
     }
 }
